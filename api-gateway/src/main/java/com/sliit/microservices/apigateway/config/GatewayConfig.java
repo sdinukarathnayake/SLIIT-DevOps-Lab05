@@ -20,45 +20,45 @@ public class GatewayConfig {
                 .route("item-service-root", r -> r
                     .path("/api/items")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8081"))
+                    .uri("http://item-service:8081"))
                 .route("item-service-all", r -> r
                     .path("/api/items/**")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8081"))
+                    .uri("http://item-service:8081"))
                 
                 // Order Service Routes
                 .route("order-service-root", r -> r
                     .path("/api/orders")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8082"))
+                    .uri("http://order-service:8082"))
                 .route("order-service-all", r -> r
                     .path("/api/orders/**")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8082"))
+                    .uri("http://order-service:8082"))
                 
                 // Payment Service Routes
                 .route("payment-service-root", r -> r
                     .path("/api/payments")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8083"))
+                    .uri("http://payment-service:8083"))
                 .route("payment-service-all", r -> r
                     .path("/api/payments/**")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8083"))
+                    .uri("http://payment-service:8083"))
                 
                 // Health check routes for each service
                 .route("item-health", r -> r
                     .path("/api/items/health")
                     .filters(f -> f.stripPrefix(1).rewritePath("/health", "/"))
-                    .uri("http://localhost:8081"))
+                    .uri("http://item-service:8081"))
                 .route("order-health", r -> r
                     .path("/api/orders/health")
                     .filters(f -> f.stripPrefix(1))
-                    .uri("http://localhost:8082"))
+                    .uri("http://order-service:8082"))
                 .route("payment-health", r -> r
                     .path("/api/payments/health")
                     .filters(f -> f.stripPrefix(1).rewritePath("/health", "/docs"))
-                    .uri("http://localhost:8083"))
+                    .uri("http://payment-service:8083"))
                 
                 .build();
     }
