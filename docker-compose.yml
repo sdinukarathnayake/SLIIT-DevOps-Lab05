@@ -17,6 +17,12 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Item Service (Node.js)
   item-service:
@@ -31,6 +37,12 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   # Order Service (Go)
   order-service:
@@ -45,6 +57,12 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   # Payment Service (Python/FastAPI)
   payment-service:
@@ -58,18 +76,16 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
 networks:
   microservices-net:
     driver: bridge
-
-# Health check configuration
-healthcheck:
-  test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-  interval: 30s
-  timeout: 10s
-  retries: 3
-  start_period: 40s
 
 # Optional: Add volumes for persistent data
 volumes:
