@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # API Gateway Service
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - item-service
+      - order-service  
+      - payment-service
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # Item Service (Node.js)
+  item-service:
+    build:
+      context: ./item-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - NODE_ENV=production
+      - PORT=8081
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # Order Service (Go)
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - GIN_MODE=release
+      - PORT=8082
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # Payment Service (Python/FastAPI)
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - ENVIRONMENT=production
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+networks:
+  microservices-net:
+    driver: bridge
+
+# Health check configuration
+healthcheck:
+  test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 40s
+
+# Optional: Add volumes for persistent data
+volumes:
+  app-logs:
+    driver: local
+#   db-data:
+#     driver: local
