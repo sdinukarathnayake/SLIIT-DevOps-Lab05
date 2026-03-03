@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # API Gateway Service
   api-gateway:
     build:
       context: ./api-gateway
@@ -24,7 +23,6 @@ services:
       retries: 3
       start_period: 40s
 
-  # Item Service (Node.js)
   item-service:
     build:
       context: ./item-service
@@ -44,7 +42,6 @@ services:
       retries: 3
       start_period: 20s
 
-  # Order Service (Go)
   order-service:
     build:
       context: ./order-service
@@ -64,7 +61,6 @@ services:
       retries: 3
       start_period: 20s
 
-  # Payment Service (Python/FastAPI)
   payment-service:
     build:
       context: ./payment-service
@@ -87,9 +83,6 @@ networks:
   microservices-net:
     driver: bridge
 
-# Optional: Add volumes for persistent data
 volumes:
   app-logs:
     driver: local
-#   db-data:
-#     driver: local
