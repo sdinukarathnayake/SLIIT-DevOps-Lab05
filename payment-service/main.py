@@ -38,3 +38,12 @@ def get_payment(payment_id: int):
         raise HTTPException(status_code=404, detail="Payment not found")
 
     return payment
+
+@app.get("/")
+def health_check():
+    """Health check endpoint """
+    return {"message": "Payment Service is running!", "status": "healthy"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8083)
